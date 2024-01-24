@@ -56,19 +56,28 @@ function mostrarAlerta(mensaje) {
   }
 }
 
-function buscarImagenes() {
+async function buscarImagenes() {
 
   const termino = document.querySelector("#termino").value;
 
     const key =  '40654191-972e14fb5c968d1249a4cd099';
     const url = `https://pixabay.com/api/?key=${key}&q=${termino}&per_page=${registrosPorPagina}&page=${paginaActual}`;
 
-    fetch(url)
-      .then(respuesta => respuesta.json())
-      .then(resultado => {
-        totalPaginas = calcularPaginas(resultado.totalHits)
-        mostrarImagenes(resultado.hits);
-      })
+    // fetch(url)
+    //   .then(respuesta => respuesta.json())
+    //   .then(resultado => {
+    //     totalPaginas = calcularPaginas(resultado.totalHits)
+    //     mostrarImagenes(resultado.hits);
+    //   })
+    try {
+      const respuesta = await fetch(url);
+      const resultado = await respuesta.json();
+      totalPaginas = calcularPaginas(resultado.totalHits)
+      mostrarImagenes(resultado.hits);
+    } catch (error) {
+      console.log(error);
+    }
+
 }
 
 // Generador que a calculat la cantidad de paginas
